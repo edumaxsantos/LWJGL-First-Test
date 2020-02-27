@@ -1,6 +1,10 @@
 package main;
 
+import engine.graphics.Mesh;
+import engine.graphics.Renderer;
+import engine.graphics.Vertex;
 import engine.io.Window;
+import engine.maths.Vector3f;
 import org.lwjgl.glfw.GLFW;
 
 public class Main implements Runnable {
@@ -10,6 +14,18 @@ public class Main implements Runnable {
     //public final int WIDTH = 1920, HEIGHT = 1080;
     public final int WIDTH = 1080, HEIGHT = 720;
 
+    public Renderer renderer;
+
+    public Mesh mesh = new Mesh(new Vertex[] {
+            new Vertex(new Vector3f(-0.5f, 0.5f, 0f)),
+            new Vertex(new Vector3f(0.5f, 0.5f, 0f)),
+            new Vertex(new Vector3f(0.5f, -0.5f, 0f)),
+            new Vertex(new Vector3f(-0.5f, -0.5f, 0f))
+    }, new int[] {
+            0, 1, 2,
+            0, 3, 2
+    });
+
     public void start() {
         game = new Thread(this, "game");
         game.start();
@@ -17,9 +33,11 @@ public class Main implements Runnable {
 
     public void init() {
         System.out.println("Initializing Game!");
+        renderer = new Renderer();
         window = new Window(WIDTH, HEIGHT, "Game");
         window.setBackgroundColor(1f, 0f, 0f);
         window.create();
+        mesh.create();
 
     }
 
@@ -48,6 +66,7 @@ public class Main implements Runnable {
 
     private void render() {
         //System.out.println("Rendering Game!");
+        renderer.renderMesh(mesh);
         window.swapBuffers();
     }
 
