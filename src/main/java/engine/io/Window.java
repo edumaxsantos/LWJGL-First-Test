@@ -1,6 +1,6 @@
 package engine.io;
 
-import engine.utilities.Color;
+import engine.utils.Color;
 import lombok.Getter;
 import org.lwjgl.glfw.GLFW;
 import org.lwjgl.glfw.GLFWVidMode;

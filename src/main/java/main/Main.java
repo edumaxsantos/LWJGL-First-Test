@@ -2,6 +2,7 @@ package main;
 
 import engine.graphics.Mesh;
 import engine.graphics.Renderer;
+import engine.graphics.Shader;
 import engine.graphics.Vertex;
 import engine.io.Window;
 import engine.maths.Vector3f;
@@ -16,14 +17,26 @@ public class Main implements Runnable {
 
     public Renderer renderer;
 
+    public Shader shader;
+
     public Mesh mesh = new Mesh(new Vertex[] {
-            new Vertex(new Vector3f(-0.5f, 0.5f, 0f)),
+            new Vertex(new Vector3f(0f, 0f, 0f)),
+            new Vertex(new Vector3f(0.2f, 0f, 0f)),
+            new Vertex(new Vector3f(0.2f, 0f, 0.2f)),
+            new Vertex(new Vector3f(0f, 0f, 0.2f)),
+            new Vertex(new Vector3f(0f, -0.2f, 0f)),
+            new Vertex(new Vector3f(0.2f, -0.2f, 0f)),
+            new Vertex(new Vector3f(0.2f, -0.2f, 0.2f)),
+            new Vertex(new Vector3f(0f, -0.2f, 0.2f))
+            /*new Vertex(new Vector3f(-0.5f, 0.5f, 0f)),
             new Vertex(new Vector3f(0.5f, 0.5f, 0f)),
             new Vertex(new Vector3f(0.5f, -0.5f, 0f)),
-            new Vertex(new Vector3f(-0.5f, -0.5f, 0f))
+            new Vertex(new Vector3f(-0.5f, -0.5f, 0f)),
+            new Vertex(new Vector3f(0.8f, 0.1f, 0.5f))*/
     }, new int[] {
-            0, 1, 2,
-            0, 3, 2
+            3, 2, 6,
+            3, 2, 7
+
     });
 
     public void start() {
@@ -33,11 +46,14 @@ public class Main implements Runnable {
 
     public void init() {
         System.out.println("Initializing Game!");
-        renderer = new Renderer();
+        String resourcesPath = System.getProperty("user.dir") + "\\src\\main\\resources";
+        shader = new Shader(resourcesPath + "\\shaders\\mainVertex.glsl", resourcesPath + "\\shaders\\mainFragment.glsl");
+        renderer = new Renderer(shader);
         window = new Window(WIDTH, HEIGHT, "Game");
         window.setBackgroundColor(1f, 0f, 0f);
         window.create();
         mesh.create();
+        shader.create();
 
     }
 

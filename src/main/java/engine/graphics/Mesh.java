@@ -1,6 +1,5 @@
 package engine.graphics;
 
-import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import org.lwjgl.opengl.GL11;
@@ -18,6 +17,11 @@ public class Mesh {
 
     private final Vertex[] vertices;
     private final int[] indices;
+    // VAO (Vertex Array Object) stores data about a 3D model
+    // has a lot of slots (attribute lists), up to 16.
+    // VBO (Vertex Buffer Object) is just data,
+    // and is put on a different position in a VAO.
+    // Each VAO has a unique ID to be accessed.
     private int vao, pbo, ibo;
 
     public void create() {
@@ -41,6 +45,15 @@ public class Mesh {
 
         IntBuffer indicesBuffer = MemoryUtil.memAllocInt(indices.length);
         indicesBuffer.put(indices).flip();
+        ibo = GL15.glGenBuffers();
+        GL15.glBindBuffer(GL15.GL_ELEMENT_ARRAY_BUFFER, ibo);
+        GL15.glBufferData(GL15.GL_ELEMENT_ARRAY_BUFFER, indicesBuffer, GL15.GL_STATIC_DRAW);
+        GL15.glBindBuffer(GL15.GL_ELEMENT_ARRAY_BUFFER, 0);
+    }
+
+    private void storeDataInIntBuffer(int[] data) {
+        IntBuffer indicesBuffer = MemoryUtil.memAllocInt(data.length);
+        indicesBuffer.put(data).flip();
         ibo = GL15.glGenBuffers();
         GL15.glBindBuffer(GL15.GL_ELEMENT_ARRAY_BUFFER, ibo);
         GL15.glBufferData(GL15.GL_ELEMENT_ARRAY_BUFFER, indicesBuffer, GL15.GL_STATIC_DRAW);

@@ -1,4 +1,4 @@
-package engine.utilities;
+package engine.utils;
 
 import lombok.Getter;
 
