@@ -7,6 +7,7 @@ import org.lwjgl.glfw.GLFWVidMode;
 import org.lwjgl.glfw.GLFWWindowSizeCallback;
 import org.lwjgl.opengl.GL;
 import org.lwjgl.opengl.GL11;
+import org.lwjgl.system.MemoryUtil;
 
 import static org.lwjgl.glfw.GLFW.glfwInit;
 
@@ -39,36 +40,46 @@ public class Window {
     }
 
     public void create() {
+        initWindow();
+
+        defineWindowPositions();
+
+        createCallbacks();
+
+        // set framerate
+        GLFW.glfwSwapInterval(1);
+
+        GLFW.glfwShowWindow(window);
+
+        time = System.currentTimeMillis();
+    }
+
+    private void initWindow() {
         if(!glfwInit()) {
-            System.err.println("ERROR: GLFW wasn't initialized");
-            return;
+            throw new IllegalStateException("ERROR: GLFW wasn't initialized");
         }
 
         input = new Input();
 
-        window = GLFW.glfwCreateWindow(width, height, title, isFullscreen ? GLFW.glfwGetPrimaryMonitor() : 0, 0);
+        window = GLFW.glfwCreateWindow(width, height, title, isFullscreen ? GLFW.glfwGetPrimaryMonitor() : MemoryUtil.NULL, MemoryUtil.NULL);
 
-        if(window == 0) {
-            System.err.println("ERROR: Window wasn't created");
-            return;
+        if(window == MemoryUtil.NULL) {
+            throw new IllegalStateException("ERROR: Window wasn't created");
         }
+    }
 
+    private void defineWindowPositions() {
+
+        // set video
         GLFWVidMode videoMode = GLFW.glfwGetVideoMode(GLFW.glfwGetPrimaryMonitor());
+
+        // define window position
         windowPosX[0] = (videoMode.width() - width) / 2;
         windowPosY[0] = (videoMode.height() - height) / 2;
         GLFW.glfwSetWindowPos(window, windowPosX[0], windowPosY[0]);
         GLFW.glfwMakeContextCurrent(window);
         GL.createCapabilities();
         GL11.glEnable(GL11.GL_DEPTH_TEST);
-
-        createCallbacks();
-
-
-        GLFW.glfwShowWindow(window);
-
-        GLFW.glfwSwapInterval(1);
-
-        time = System.currentTimeMillis();
     }
 
     private void createCallbacks() {
