@@ -20,22 +20,23 @@ public class Main implements Runnable {
     public Shader shader;
 
     public Mesh mesh = new Mesh(new Vertex[] {
-            new Vertex(new Vector3f(0f, 0f, 0f)),
+            /*new Vertex(new Vector3f(0f, 0f, 0f)),
             new Vertex(new Vector3f(0.2f, 0f, 0f)),
             new Vertex(new Vector3f(0.2f, 0f, 0.2f)),
             new Vertex(new Vector3f(0f, 0f, 0.2f)),
             new Vertex(new Vector3f(0f, -0.2f, 0f)),
             new Vertex(new Vector3f(0.2f, -0.2f, 0f)),
             new Vertex(new Vector3f(0.2f, -0.2f, 0.2f)),
-            new Vertex(new Vector3f(0f, -0.2f, 0.2f))
-            /*new Vertex(new Vector3f(-0.5f, 0.5f, 0f)),
-            new Vertex(new Vector3f(0.5f, 0.5f, 0f)),
-            new Vertex(new Vector3f(0.5f, -0.5f, 0f)),
-            new Vertex(new Vector3f(-0.5f, -0.5f, 0f)),
-            new Vertex(new Vector3f(0.8f, 0.1f, 0.5f))*/
+            new Vertex(new Vector3f(0f, -0.2f, 0.2f))*/
+            new Vertex(new Vector3f(-0.5f, 0.5f, 0f), new Vector3f(1f, 0f, 0f)),
+            new Vertex(new Vector3f(0.5f, 0.5f, 0f), new Vector3f(0f, 1f, 0f)),
+            new Vertex(new Vector3f(0.5f, -0.5f, 0f), new Vector3f(0f, 0f, 1f)),
+            new Vertex(new Vector3f(-0.5f, -0.5f, 0f), new Vector3f(1f, 1f, 0f))
     }, new int[] {
-            3, 2, 6,
-            3, 2, 7
+            0, 1, 2,
+            0, 3, 2
+            /*3, 2, 6,
+            3, 2, 7*/
 
     });
 
@@ -66,7 +67,7 @@ public class Main implements Runnable {
                 window.setIsFullscreen(!window.getIsFullscreen());
             }
         }
-        window.destroy();
+        close();
         System.out.println("Closing Game!");
     }
 
@@ -84,6 +85,12 @@ public class Main implements Runnable {
         //System.out.println("Rendering Game!");
         renderer.renderMesh(mesh);
         window.swapBuffers();
+    }
+
+    private void close() {
+        mesh.destroy();
+        shader.destroy();
+        window.destroy();
     }
 
     public static void main(String[] args) {

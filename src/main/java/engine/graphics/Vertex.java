@@ -8,4 +8,5 @@ import lombok.Getter;
 @Getter
 public class Vertex {
     private Vector3f position;
+    private Vector3f color;
 }
