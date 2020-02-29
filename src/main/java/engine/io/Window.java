@@ -40,6 +40,7 @@ public class Window {
     }
 
     public void create() {
+
         initWindow();
 
         defineWindowPositions();
@@ -55,11 +56,17 @@ public class Window {
     }
 
     private void initWindow() {
+        GLFW.glfwWindowHint(GLFW.GLFW_CONTEXT_VERSION_MAJOR, 4);
+        GLFW.glfwWindowHint(GLFW.GLFW_CONTEXT_VERSION_MINOR, 6);
+        GLFW.glfwWindowHint(GLFW.GLFW_OPENGL_FORWARD_COMPAT, GL11.GL_TRUE);
+        GLFW.glfwWindowHint(GLFW.GLFW_OPENGL_PROFILE, GLFW.GLFW_OPENGL_CORE_PROFILE);
         if(!glfwInit()) {
             throw new IllegalStateException("ERROR: GLFW wasn't initialized");
         }
 
         input = new Input();
+
+
 
         window = GLFW.glfwCreateWindow(width, height, title, isFullscreen ? GLFW.glfwGetPrimaryMonitor() : MemoryUtil.NULL, MemoryUtil.NULL);
 
