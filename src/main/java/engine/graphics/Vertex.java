@@ -4,10 +4,12 @@ import engine.maths.Vector2f;
 import engine.maths.Vector3f;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.RequiredArgsConstructor;
 
-@AllArgsConstructor
+@RequiredArgsConstructor
 @Getter
 public class Vertex {
-    private Vector3f position;//, color;
-    private Vector2f textureCoord;
+    private final Vector3f position, normal;//, color;
+    private final Vector2f textureCoord;
+
 }

@@ -2,6 +2,7 @@ package main;
 
 import engine.graphics.*;
 import engine.io.Input;
+import engine.io.ModelLoader;
 import engine.io.Window;
 import engine.maths.Vector2f;
 import engine.maths.Vector3f;
@@ -22,71 +23,11 @@ public class Main implements Runnable {
 
     String resourcesPath = System.getProperty("user.dir") + "\\src\\main\\resources";
 
-    public Mesh mesh = new Mesh(new Vertex[] {
-            //Back face
-            new Vertex(new Vector3f(-0.5f,  0.5f, -0.5f), new Vector2f(0.0f, 0.0f)),
-            new Vertex(new Vector3f(-0.5f, -0.5f, -0.5f), new Vector2f(0.0f, 1.0f)),
-            new Vertex(new Vector3f( 0.5f, -0.5f, -0.5f), new Vector2f(1.0f, 1.0f)),
-            new Vertex(new Vector3f( 0.5f,  0.5f, -0.5f), new Vector2f(1.0f, 0.0f)),
+    public Mesh mesh = ModelLoader.loadModel(resourcesPath + "\\models\\bunny.stl",resourcesPath + "\\textures\\beautiful.png");
 
-            //Front face
-            new Vertex(new Vector3f(-0.5f,  0.5f,  0.5f), new Vector2f(0.0f, 0.0f)),
-            new Vertex(new Vector3f(-0.5f, -0.5f,  0.5f), new Vector2f(0.0f, 1.0f)),
-            new Vertex(new Vector3f( 0.5f, -0.5f,  0.5f), new Vector2f(1.0f, 1.0f)),
-            new Vertex(new Vector3f( 0.5f,  0.5f,  0.5f), new Vector2f(1.0f, 0.0f)),
+    public GameObject[] objects = new GameObject[3];
 
-            //Right face
-            new Vertex(new Vector3f( 0.5f,  0.5f, -0.5f), new Vector2f(0.0f, 0.0f)),
-            new Vertex(new Vector3f( 0.5f, -0.5f, -0.5f), new Vector2f(0.0f, 1.0f)),
-            new Vertex(new Vector3f( 0.5f, -0.5f,  0.5f), new Vector2f(1.0f, 1.0f)),
-            new Vertex(new Vector3f( 0.5f,  0.5f,  0.5f), new Vector2f(1.0f, 0.0f)),
-
-            //Left face
-            new Vertex(new Vector3f(-0.5f,  0.5f, -0.5f), new Vector2f(0.0f, 0.0f)),
-            new Vertex(new Vector3f(-0.5f, -0.5f, -0.5f), new Vector2f(0.0f, 1.0f)),
-            new Vertex(new Vector3f(-0.5f, -0.5f,  0.5f), new Vector2f(1.0f, 1.0f)),
-            new Vertex(new Vector3f(-0.5f,  0.5f,  0.5f), new Vector2f(1.0f, 0.0f)),
-
-            //Top face
-            new Vertex(new Vector3f(-0.5f,  0.5f,  0.5f), new Vector2f(0.0f, 0.0f)),
-            new Vertex(new Vector3f(-0.5f,  0.5f, -0.5f), new Vector2f(0.0f, 1.0f)),
-            new Vertex(new Vector3f( 0.5f,  0.5f, -0.5f), new Vector2f(1.0f, 1.0f)),
-            new Vertex(new Vector3f( 0.5f,  0.5f,  0.5f), new Vector2f(1.0f, 0.0f)),
-
-            //Bottom face
-            new Vertex(new Vector3f(-0.5f, -0.5f,  0.5f), new Vector2f(0.0f, 0.0f)),
-            new Vertex(new Vector3f(-0.5f, -0.5f, -0.5f), new Vector2f(0.0f, 1.0f)),
-            new Vertex(new Vector3f( 0.5f, -0.5f, -0.5f), new Vector2f(1.0f, 1.0f)),
-            new Vertex(new Vector3f( 0.5f, -0.5f,  0.5f), new Vector2f(1.0f, 0.0f)),
-    }, new int[] {
-            //Back face
-            0, 1, 3,
-            3, 1, 2,
-
-            //Front face
-            4, 5, 7,
-            7, 5, 6,
-
-            //Right face
-            8, 9, 11,
-            11, 9, 10,
-
-            //Left face
-            12, 13, 15,
-            15, 13, 14,
-
-            //Top face
-            16, 17, 19,
-            19, 17, 18,
-
-            //Bottom face
-            20, 21, 23,
-            23, 21, 22
-    }, new Material(resourcesPath + "\\textures\\beautiful.png"));
-
-    public GameObject[] objects = new GameObject[500];
-
-    public GameObject object = new GameObject(new Vector3f(0, 0, 0), new Vector3f(0, 0, 0), new Vector3f(1, 1, 1), mesh);
+    public GameObject object = new GameObject(new Vector3f(0, 0, 0), new Vector3f(0, 0, 0), new Vector3f(.1f, .1f, .1f), mesh);
 
     public Camera camera = new Camera(new Vector3f(0, 0, 1), new Vector3f(0, 0, 0));
 
@@ -124,7 +65,7 @@ public class Main implements Runnable {
 
     public void run() {
         init();
-        while(!window.shouldClose() && !window.input.isKeyDown(GLFW.GLFW_KEY_ESCAPE)) {
+        while(!window.shouldClose() && !Input.isKeyDown(GLFW.GLFW_KEY_ESCAPE)) {
             update();
             render();
             if(Input.isKeyDown(GLFW.GLFW_KEY_F11)) {
@@ -140,16 +81,16 @@ public class Main implements Runnable {
 
     private void update() {
         window.update();
-        camera.update(object);
+        camera.update();
     }
 
     private void render() {
         //System.out.println("Rendering Game!");
         //renderer.renderMesh(mesh);
 
-        for (int i = 1; i < objects.length; i++) {
+        /*for (int i = 1; i < objects.length; i++) {
             renderer.renderGameObject(objects[i], camera);
-        }
+        }*/
 
         renderer.renderGameObject(object, camera);
         window.swapBuffers();
