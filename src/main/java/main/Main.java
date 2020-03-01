@@ -84,6 +84,8 @@ public class Main implements Runnable {
             23, 21, 22
     }, new Material(resourcesPath + "\\textures\\beautiful.png"));
 
+    public GameObject[] objects = new GameObject[500];
+
     public GameObject object = new GameObject(new Vector3f(0, 0, 0), new Vector3f(0, 0, 0), new Vector3f(1, 1, 1), mesh);
 
     public Camera camera = new Camera(new Vector3f(0, 0, 1), new Vector3f(0, 0, 0));
@@ -105,6 +107,19 @@ public class Main implements Runnable {
         mesh.create();
         shader.create();
 
+        objects[0] = object;
+        for (int i = 1; i < objects.length; i++) {
+            objects[i] = new GameObject(
+                    new Vector3f(
+                            (float) Math.random() * 50 - 25,
+                            (float) Math.random() * 50 - 25,
+                            (float) Math.random() * 50 - 25),
+                    new Vector3f(0, 0, 0),
+                    new Vector3f(1, 1, 1),
+                    mesh
+            );
+        }
+
     }
 
     public void run() {
@@ -125,12 +140,17 @@ public class Main implements Runnable {
 
     private void update() {
         window.update();
-        camera.update();
+        camera.update(object);
     }
 
     private void render() {
         //System.out.println("Rendering Game!");
         //renderer.renderMesh(mesh);
+
+        for (int i = 1; i < objects.length; i++) {
+            renderer.renderGameObject(objects[i], camera);
+        }
+
         renderer.renderGameObject(object, camera);
         window.swapBuffers();
     }
