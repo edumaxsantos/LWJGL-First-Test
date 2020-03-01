@@ -1,7 +1,9 @@
 package engine.graphics;
 
 
+import engine.io.Window;
 import engine.maths.Matrix4f;
+import engine.objects.Camera;
 import engine.objects.GameObject;
 import lombok.RequiredArgsConstructor;
 import org.lwjgl.opengl.*;
@@ -11,11 +13,12 @@ import org.lwjgl.opengl.*;
 public class Renderer {
 
     private final Shader shader;
+    private final Window window;
     private float scale;
 
 
 
-    public void renderGameObject(GameObject object) {
+    public void renderGameObject(GameObject object, Camera camera) {
         Mesh mesh = object.getMesh();
         GL30.glBindVertexArray(mesh.getVao());
         GL30.glEnableVertexAttribArray(0);
@@ -26,6 +29,8 @@ public class Renderer {
         GL13.glBindTexture(GL11.GL_TEXTURE_2D, mesh.getMaterial().getTextureID());
         shader.bind();
         shader.setUniform("model", Matrix4f.transform(object.getPosition(), object.getRotation(), object.getScale()));
+        shader.setUniform("view", Matrix4f.view(camera.getPosition(), camera.getRotation()));
+        shader.setUniform("projection", window.getProjection());
         GL11.glDrawElements(GL11.GL_TRIANGLES, mesh.getIndices().length, GL11.GL_UNSIGNED_INT, 0);
         shader.unbind();
         GL15.glBindBuffer(GL15.GL_ELEMENT_ARRAY_BUFFER, 0);

@@ -1,5 +1,6 @@
 package engine.io;
 
+import engine.maths.Matrix4f;
 import engine.utils.Color;
 import lombok.Getter;
 import org.lwjgl.glfw.GLFW;
@@ -33,10 +34,15 @@ public class Window {
 
     private int[] windowPosX = new int[1], windowPosY = new int[1];
 
+    @Getter
+    private Matrix4f projection;
+
+
     public Window(int width, int height, String title){
         this.width = width;
         this.height = height;
         this.title = title;
+        projection = Matrix4f.projection(70f, (float) width / (float) height, 0.1f, 1000f);
     }
 
     public void create() {

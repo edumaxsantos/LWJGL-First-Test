@@ -4,9 +4,9 @@ import engine.graphics.*;
 import engine.io.Window;
 import engine.maths.Vector2f;
 import engine.maths.Vector3f;
+import engine.objects.Camera;
 import engine.objects.GameObject;
 import org.lwjgl.glfw.GLFW;
-import org.lwjglx.test.spaceinvaders.Game;
 
 public class Main implements Runnable {
 
@@ -50,7 +50,10 @@ public class Main implements Runnable {
 
     }, new Material(resourcesPath + "\\textures\\beautiful.png"));
 
-    public GameObject object = new GameObject(new Vector3f(0f, 0f, 0f), new Vector3f(0f, 0f, 0f), new Vector3f(1f, 1f, 1f), mesh);
+    public GameObject object = new GameObject(new Vector3f(0, 0, 0), new Vector3f(0, 0, 0), new Vector3f(1, 1, 1), mesh);
+
+    public Camera camera = new Camera(new Vector3f(0, 0, 1), new Vector3f(0, 0, 0));
+
 
     public void start() {
         game = new Thread(this, "game");
@@ -61,7 +64,7 @@ public class Main implements Runnable {
         System.out.println("Initializing Game!");
         window = new Window(WIDTH, HEIGHT, "Game");
         shader = new Shader(resourcesPath + "\\shaders\\mainVertex.glsl", resourcesPath + "\\shaders\\mainFragment.glsl");
-        renderer = new Renderer(shader);
+        renderer = new Renderer(shader, window);
 
         window.setBackgroundColor(1.0f, 0f, 0f);
         window.create();
@@ -84,9 +87,7 @@ public class Main implements Runnable {
     }
 
     private void update() {
-        //System.out.println("Updating Game!");
         window.update();
-        object.update();
         if (window.input.isButtonDown(GLFW.GLFW_MOUSE_BUTTON_LEFT)) {
 
             System.out.println("X: " + window.input.getMouseX() + ", Y: " + window.input.getMouseY());
@@ -97,7 +98,7 @@ public class Main implements Runnable {
     private void render() {
         //System.out.println("Rendering Game!");
         //renderer.renderMesh(mesh);
-        renderer.renderGameObject(object);
+        renderer.renderGameObject(object, camera);
         window.swapBuffers();
     }
 
