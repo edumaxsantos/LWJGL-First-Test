@@ -32,7 +32,7 @@ public class Matrix4f {
     }
 
     public static Matrix4f rotate(float angle, Vector3f axis) {
-        Matrix4f result = new Matrix4f();
+        Matrix4f result = Matrix4f.identity();
 
         float sin = (float) Math.sin(Math.toRadians(angle));
         float cos = (float) Math.cos(Math.toRadians(angle));
