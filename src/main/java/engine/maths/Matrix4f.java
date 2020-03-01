@@ -1,5 +1,8 @@
 package engine.maths;
 
+import lombok.EqualsAndHashCode;
+
+@EqualsAndHashCode
 public class Matrix4f {
 
     public static final int SIZE = 4;
