@@ -70,6 +70,9 @@ public class Mesh {
         GL15.glBindBuffer(GL15.GL_ELEMENT_ARRAY_BUFFER, ibo);
         GL15.glBufferData(GL15.GL_ELEMENT_ARRAY_BUFFER, indicesBuffer, GL15.GL_STATIC_DRAW);
         GL15.glBindBuffer(GL15.GL_ELEMENT_ARRAY_BUFFER, 0);
+
+        freeAllFloatBuffers(positionBuffer, colorBuffer, textureBuffer);
+        freeAllIntBuffers(indicesBuffer);
     }
 
     private int storeData(FloatBuffer buffer, int index, int size) {
@@ -91,13 +94,16 @@ public class Mesh {
         material.destroy();
     }
 
-    private void storeDataInIntBuffer(int[] data) {
-        IntBuffer indicesBuffer = MemoryUtil.memAllocInt(data.length);
-        indicesBuffer.put(data).flip();
-        ibo = GL15.glGenBuffers();
-        GL15.glBindBuffer(GL15.GL_ELEMENT_ARRAY_BUFFER, ibo);
-        GL15.glBufferData(GL15.GL_ELEMENT_ARRAY_BUFFER, indicesBuffer, GL15.GL_STATIC_DRAW);
-        GL15.glBindBuffer(GL15.GL_ELEMENT_ARRAY_BUFFER, 0);
+    private void freeAllFloatBuffers(FloatBuffer ...buffers) {
+        for (FloatBuffer buffer : buffers) {
+            MemoryUtil.memFree(buffer);
+        }
+    }
+
+    private void freeAllIntBuffers(IntBuffer ...buffers) {
+        for (IntBuffer buffer : buffers) {
+            MemoryUtil.memFree(buffer);
+        }
     }
 
 }

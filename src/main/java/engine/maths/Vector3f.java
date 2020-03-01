@@ -16,4 +16,10 @@ public class Vector3f {
         this.z = z;
     }
 
+    public void add(float x, float y, float z) {
+        this.x += x;
+        this.y += y;
+        this.z += z;
+    }
+
 }

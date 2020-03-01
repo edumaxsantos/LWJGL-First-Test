@@ -85,6 +85,7 @@ public class Shader {
         matrix.put(value.getAll());
         matrix.flip();
         GL20.glUniformMatrix4fv(getUniformLocation(name), true, matrix);
+        MemoryUtil.memFree(matrix);
     }
 
     public void bind() {
