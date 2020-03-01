@@ -43,7 +43,7 @@ public class Mesh {
         pbo = storeData(positionBuffer, 0, 3);
 
         FloatBuffer colorBuffer = MemoryUtil.memAllocFloat(vertices.length * 3);
-        float[] colorData = new float[vertices.length * 3];
+        /*float[] colorData = new float[vertices.length * 3];
         for (int i = 0; i < vertices.length; i++) {
             colorData[i * 3] = vertices[i].getColor().getX();
             colorData[i * 3 + 1] = vertices[i].getColor().getY();
@@ -51,7 +51,7 @@ public class Mesh {
         }
         colorBuffer.put(colorData).flip();
 
-        cbo = storeData(colorBuffer, 1, 3);
+        cbo = storeData(colorBuffer, 1, 3);*/
 
         FloatBuffer textureBuffer = MemoryUtil.memAllocFloat(vertices.length * 2);
         float[] textureData = new float[vertices.length * 2];

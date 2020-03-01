@@ -62,7 +62,7 @@ public class Input {
         return keys[key];
     }
 
-    public boolean isButtonDown(int button) {
+    public static boolean isButtonDown(int button) {
         return buttons[button];
     }
 
